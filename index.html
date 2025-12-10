@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>資料表</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>資料表</h1>
+<div id="table-container">載入中...</div>
+
+<script>
+async function loadTable() {
+  const res = await fetch('data.json');
+  const data = await res.json();
+
+  let html = "<table>";
+  html += "<tr>" + Object.keys(data[0]).map(k => `<th>${k}</th>`).join("") + "</tr>";
+
+  data.forEach(row => {
+    html += "<tr>" + Object.values(row).map(v => `<td>${v}</td>`).join("") + "</tr>";
+  });
+
+  html += "</table>";
+  document.getElementById("table-container").innerHTML = html;
+}
+
+loadTable();
+</script>
+
+</body>
+</html>

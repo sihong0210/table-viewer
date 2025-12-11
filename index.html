@@ -14,34 +14,44 @@
 
 <script>
 async function loadTable() {
-  try {
-    const res = await fetch('data.json');
-    const data = await res.json();
+    try {
+        const res = await fetch('data.json');
+        const data = await res.json();
 
-    if (!Array.isArray(data) || data.length === 0) {
-      document.getElementById("table-container").innerHTML = "<p>無資料</p>";
-      return;
+        if (!Array.isArray(data) || data.length === 0) {
+            document.getElementById("table-container").innerHTML = "<p>無資料</p>";
+            return;
+        }
+
+        // 1. 定義表頭：過濾掉 'Highlight' 欄位
+        const headers = Object.keys(data[0]).filter(k => k !== 'Highlight');
+
+        let html = "<div class='table-wrapper'><table class='data-table'>";
+        
+        // 輸出表頭
+        html += "<thead><tr>" + headers.map(k => `<th>${k}</th>`).join("") + "</tr></thead>";
+
+        html += "<tbody>";
+        data.forEach(row => {
+            // 檢查 Highlight 屬性來設定行樣式
+            const trClass = row.Highlight ? "highlight-row" : "";
+
+            html += `<tr class="${trClass}">`;
+
+            // 輸出表格內容：只迭代和輸出 headers 陣列中定義的欄位
+            html += headers.map(k => `<td>${row[k]}</td>`).join("");
+            
+            html += "</tr>";
+        });
+        html += "</tbody></table></div>";
+
+        document.getElementById("table-container").innerHTML = html;
+        document.getElementById("table-container").classList.remove("loader");
+
+    } catch (err) {
+        console.error("讀取或處理資料失敗:", err);
+        document.getElementById("table-container").innerHTML = "<p>讀取失敗</p>";
     }
-
-    let html = "<div class='table-wrapper'><table class='data-table'>";
-    html += "<thead><tr>" + Object.keys(data[0]).map(k => `<th>${k}</th>`).join("") + "</tr></thead>";
-
-    html += "<tbody>";
-    data.forEach(row => {
-      const trClass = row.Highlight ? "highlight-row" : "";
-
-      html += `<tr class="${trClass}">` + 
-        Object.values(row).map(v => `<td>${v}</td>`).join("") +
-        "</tr>";
-    });
-    html += "</tbody></table></div>";
-
-    document.getElementById("table-container").innerHTML = html;
-    document.getElementById("table-container").classList.remove("loader");
-
-  } catch (err) {
-    document.getElementById("table-container").innerHTML = "<p>讀取失敗</p>";
-  }
 }
 
 loadTable();

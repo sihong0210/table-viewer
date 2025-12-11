@@ -8,21 +8,39 @@
 <body>
 <h1>資料表</h1>
 <div id="table-container">載入中...</div>
-<script src="data.js"></script>
+
 <script>
 async function loadTable() {
-  const res = await fetch('./data.js');
-  const data = await res.json();
+  try {
+    const res = await fetch('https://sihong0210.github.io/table-viewer/data.json', {
+      cache: "no-store"   // ⭐避免 GitHub Pages 快取
+    });
 
-  let html = "<table>";
-  html += "<tr>" + Object.keys(data[0]).map(k => `<th>${k}</th>`).join("") + "</tr>";
+    if (!res.ok) {
+      document.getElementById("table-container").innerHTML = "讀取錯誤：HTTP " + res.status;
+      return;
+    }
 
-  data.forEach(row => {
-    html += "<tr>" + Object.values(row).map(v => `<td>${v}</td>`).join("") + "</tr>";
-  });
+    const data = await res.json();
 
-  html += "</table>";
-  document.getElementById("table-container").innerHTML = html;
+    if (!Array.isArray(data) || data.length === 0) {
+      document.getElementById("table-container").innerHTML = "JSON 格式錯誤或無資料";
+      return;
+    }
+
+    let html = "<table>";
+    html += "<tr>" + Object.keys(data[0]).map(k => `<th>${k}</th>`).join("") + "</tr>";
+
+    data.forEach(row => {
+      html += "<tr>" + Object.values(row).map(v => `<td>${v}</td>`).join("") + "</tr>";
+    });
+
+    html += "</table>";
+    document.getElementById("table-container").innerHTML = html;
+
+  } catch (e) {
+    document.getElementById("table-container").innerHTML = "讀取失敗：" + e.message;
+  }
 }
 
 loadTable();

@@ -29,6 +29,7 @@ async function loadTable() {
     html += "<tbody>";
     data.forEach(row => {
       const trClass = row.Highlight ? "highlight-row" : "";
+
       html += `<tr class="${trClass}">` + 
         Object.values(row).map(v => `<td>${v}</td>`).join("") +
         "</tr>";

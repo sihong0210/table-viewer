@@ -1,122 +1,42 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>資料表</title>
-
-<style>
-    body {
-        font-family: "Segoe UI", Arial, sans-serif;
-        margin: 0;
-        padding: 20px;
-        background: #f5f6fa;
-        color: #333;
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 25px;
-        font-size: 24px;
-        color: #2c3e50;
-    }
-
-    .table-wrapper {
-        overflow-x: auto; /* 手機可橫向滑動 */
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        max-width: 100%;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 600px; /* 避免手機擠壓變形 */
-    }
-
-    th, td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #e0e0e0;
-        text-align: left;
-        white-space: nowrap;
-    }
-
-    th {
-        background: #3498db;
-        color: white;
-        font-weight: bold;
-        position: sticky;
-        top: 0;
-        z-index: 2;
-    }
-
-    tr:hover td {
-        background: #f0f9ff;
-    }
-
-    @media (max-width: 600px) {
-        h1 {
-            font-size: 20px;
-        }
-        th, td {
-            padding: 10px;
-        }
-        .table-wrapper {
-            padding: 10px;
-        }
-    }
-</style>
+<meta charset="UTF-8">
+<title>檢體上機進度</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<h1>資料表</h1>
-<div class="table-wrapper">
-    <div id="table-container">載入中...</div>
-</div>
+<h1 class="title">Commercial Samples上機進度</h1>
+
+<div id="table-container" class="loader">載入中...</div>
 
 <script>
 async function loadTable() {
   try {
-    const res = await fetch("https://sihong0210.github.io/table-viewer/data.json", {
-      cache: "no-store"
-    });
-
-    if (!res.ok) {
-      document.getElementById("table-container").innerHTML =
-        "讀取錯誤：" + res.status;
-      return;
-    }
-
+    const res = await fetch('data.json');
     const data = await res.json();
+
     if (!Array.isArray(data) || data.length === 0) {
-      document.getElementById("table-container").innerHTML = "無資料";
+      document.getElementById("table-container").innerHTML = "<p>無資料</p>";
       return;
     }
 
-    let html = "<table>";
-    html +=
-      "<tr>" +
-      Object.keys(data[0])
-        .map((k) => `<th>${k}</th>`)
-        .join("") +
-      "</tr>";
+    let html = "<div class='table-wrapper'><table class='data-table'>";
+    html += "<thead><tr>" + Object.keys(data[0]).map(k => `<th>${k}</th>`).join("") + "</tr></thead>";
 
-    data.forEach((row) => {
-      html +=
-        "<tr>" +
-        Object.values(row)
-          .map((v) => `<td>${v}</td>`)
-          .join("") +
-        "</tr>";
+    html += "<tbody>";
+    data.forEach(row => {
+      html += "<tr>" + Object.values(row).map(v => `<td>${v}</td>`).join("") + "</tr>";
     });
+    html += "</tbody></table></div>";
 
-    html += "</table>";
     document.getElementById("table-container").innerHTML = html;
-  } catch (e) {
-    document.getElementById("table-container").innerHTML =
-      "讀取失敗：" + e.message;
+    document.getElementById("table-container").classList.remove("loader");
+
+  } catch (err) {
+    document.getElementById("table-container").innerHTML = "<p>讀取失敗</p>";
   }
 }
 

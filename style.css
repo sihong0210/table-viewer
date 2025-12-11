@@ -1,21 +1,84 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  margin: 0;
   padding: 20px;
+  background: #f7f8fa;
+  color: #333;
 }
 
-table {
-  border-collapse: collapse;
+.title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* 🔄 載入動畫 */
+.loader {
+  font-size: 20px;
+  text-align: center;
+  padding: 50px;
+  color: #777;
+}
+
+/* 📱 手機可橫向捲動 */
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
   width: 100%;
-  margin-top: 20px;
-  font-size: 16px;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 12px rgba(0,0,0,0.08);
 }
 
-th, td {
-  border: 1px solid #ccc;
-  padding: 10px 12px;
+/* 表頭樣式 */
+.data-table thead {
+  background: #2c3e50;
+  color: white;
+}
+
+.data-table th {
+  padding: 12px 15px;
   text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-th {
-  background: #f5f5f5;
+/* 表格內容 */
+.data-table td {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+}
+
+/* 斑馬紋效果 */
+.data-table tr:nth-child(even) {
+  background: #f5f7fa;
+}
+
+/* 滑鼠移到列上 */
+.data-table tr:hover {
+  background: #e8f0fe;
+}
+
+/* 📱 RWD 手機優化 */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
 }

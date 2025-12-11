@@ -11,7 +11,7 @@
 
 <script>
 async function loadTable() {
-  const res = await fetch('./data.json');
+  const res = await fetch('https://sihong0210.github.io/table-viewer/data.json');
   const data = await res.json();
 
   let html = "<table>";

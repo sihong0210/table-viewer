@@ -14,6 +14,10 @@ body {
   color: #2c3e50;
 }
 
+.highlight-row td {
+  border-bottom: 3px solid #ff9800;
+}
+
 /* 載入動畫 */
 .loader {
   font-size: 20px;
@@ -82,7 +86,4 @@ body {
     font-size: 14px;
   }
   
-  .highlight-row td {
-  border-bottom: 3px solid #ff9800;
-  }
 }

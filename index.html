@@ -8,10 +8,10 @@
 <body>
 <h1>資料表</h1>
 <div id="table-container">載入中...</div>
-
+<script src="data.js"></script>
 <script>
 async function loadTable() {
-  const res = await fetch('https://sihong0210.github.io/table-viewer/data.json');
+  const res = await fetch('./data.js');
   const data = await res.json();
 
   let html = "<table>";

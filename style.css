@@ -81,4 +81,8 @@ body {
     padding: 8px 10px;
     font-size: 14px;
   }
+  
+  .highlight-row td {
+  border-bottom: 3px solid #ff9800;
+  }
 }
